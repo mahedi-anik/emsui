@@ -1,24 +1,35 @@
-// src/api.js
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/Department'; // Adjust the URL as needed
+const API_URL = 'https://localhost:7084/api/Employee';
 
-export const getDepartments = async () => {
-    const response = await axios.get(`${API_URL}/GetDepartments`);
+const getEmployees = async (searchTerm = '', pageIndex = 0, pageSize = 10, sortField = '', sortOrder = '') => {
+    const params = {
+        pageIndex: pageIndex,
+        pageSize: pageSize,
+        sortField: String,
+        sortOrder: 0
+    };
+
+    if (searchTerm) {
+        params.searchTerm = searchTerm;
+    }
+
+    const response = await axios.get(`${API_URL}/GetEmployees`, { params });
     return response.data;
 };
 
-export const getDepartment = async (id) => {
-    const response = await axios.get(`${API_URL}/GetDepartment`, { params: { id } });
+const createEmployee = async (employee) => {
+    const response = await axios.post(`${API_URL}/createEmployee`, employee);
     return response.data;
 };
 
-export const createDepartment = async (department) => {
-    const response = await axios.post(`${API_URL}/CreateDepartment`, department);
+const updateEmployee = async (employee) => {
+    const response = await axios.put(`${API_URL}/updateEmployee`, employee);
     return response.data;
 };
 
-export const updateDepartment = async (department) => {
-    const response = await axios.put(`${API_URL}/UpdateDepartment`, department);
-    return response.data;
+export default {
+    getEmployees,
+    createEmployee,
+    updateEmployee,
 };

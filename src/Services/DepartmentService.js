@@ -1,12 +1,11 @@
-// src/Service/DepartmentService.js
 import axios from 'axios';
 
-const API_URL = 'https://localhost:7084/api/department'; // Adjust the URL as needed
+const API_URL = 'https://localhost:7084/api/department'; 
 
 const getDepartments = async (searchTerm = '', pageIndex = 0, pageSize = 10, sortField = '', sortOrder = '') => {
     const response = await axios.get(`${API_URL}/getDepartments`, {
         params: {
-            searchTerm: searchTerm || '',  // Set to empty string if not provided
+            searchTerm: searchTerm || '',  
             pageIndex: pageIndex,
             pageSize: pageSize,
             sortField: String,
