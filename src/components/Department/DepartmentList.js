@@ -19,10 +19,10 @@ const DepartmentList = () => {
     const fetchDepartments = async () => {
         try {
             const data = await DepartmentService.getDepartments(searchTerm, pageIndex, pageSize);
-            console.log(data); // Log the data to check its structure
+            console.log(data); 
             if (data?.isSuccess && Array.isArray(data.records)) {
                 setDepartments(data.records);
-                setTotalRecords(data.totalRecords); // Assuming the API returns total records count
+                setTotalRecords(data.totalRecords); 
             } else {
                 console.error('Unexpected response structure:', data);
             }
@@ -52,7 +52,7 @@ const DepartmentList = () => {
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
-        setPageIndex(0); // Reset to first page when search term changes
+        setPageIndex(0); 
     };
 
     const handlePageChange = (newPageIndex) => {
@@ -61,7 +61,7 @@ const DepartmentList = () => {
 
     const handlePageSizeChange = (e) => {
         setPageSize(Number(e.target.value));
-        setPageIndex(0); // Reset to first page when page size changes
+        setPageIndex(0); 
     };
 
     const totalPages = Math.ceil(totalRecords / pageSize);

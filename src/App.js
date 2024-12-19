@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DepartmentList from './components/Department/DepartmentList';
 import EmployeeList from './components/Employee/EmployeeList';
-import PerformanceReview from './components/Employee/EmployeeList';
+import PerformanceReview from './components/PerformanceReview/PerformanceReviewList';
 
 const App = () => {
   return (

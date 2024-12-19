@@ -19,10 +19,10 @@ const EmployeeList = () => {
     const fetchEmployees = async () => {
         try {
             const data = await EmployeeService.getEmployees(searchTerm, pageIndex, pageSize);
-            console.log(data); // Log the data to check its structure
+            console.log(data); 
             if (data?.isSuccess && Array.isArray(data.records)) {
                 setEmployees(data.records);
-                setTotalRecords(data.totalRecords); // Assuming the API returns total records count
+                setTotalRecords(data.totalRecords); 
             } else {
                 console.error('Unexpected response structure:', data);
             }
@@ -31,15 +31,20 @@ const EmployeeList = () => {
         }
     };
 
-    const handleShow = (department = null) => {
-        setSelectedEmployee(department);
-        setShowModal(true);
+    const handleShow = (employee = null) => {
+        setSelectedEmployee(employee);
+        setShowModal(true); 
     };
 
     const handleClose = () => {
-        setSelectedEmployee(null);
-        setShowModal(false);
+        setSelectedEmployee(null); 
+        setShowModal(false); 
     };
+    
+    useEffect(() => {
+        console.log('Modal state changed:', showModal);
+    }, [showModal]);
+    
 
     const handleSubmit = async (employee) => {
         if (employee.id) {
@@ -52,7 +57,7 @@ const EmployeeList = () => {
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
-        setPageIndex(0); // Reset to first page when search term changes
+        setPageIndex(0); 
     };
 
     const handlePageChange = (newPageIndex) => {
@@ -61,7 +66,7 @@ const EmployeeList = () => {
 
     const handlePageSizeChange = (e) => {
         setPageSize(Number(e.target.value));
-        setPageIndex(0); // Reset to first page when page size changes
+        setPageIndex(0); 
     };
 
     const totalPages = Math.ceil(totalRecords / pageSize);
@@ -111,7 +116,15 @@ const EmployeeList = () => {
                                     <td>{employee.position}</td>
                                     <td>{employee.email}</td>
                                     <td>{employee.phone}</td>
-                                    <td>{employee.jooiningDate}</td>
+                                    <td>
+    {employee.joiningDate
+        ? new Intl.DateTimeFormat("en-US", {
+            month: "2-digit",
+            day: "2-digit",
+            year: "numeric",
+        }).format(new Date(employee.joiningDate))
+        : "N/A"}
+</td>
                                     <td>{employee.isActive ? 'Active' : 'Inactive'}</td>
                                     <td>
                                         <Button variant="warning" onClick={() => handleShow(employee)}>

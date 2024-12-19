@@ -17,6 +17,19 @@ const getEmployees = async (searchTerm = '', pageIndex = 0, pageSize = 10, sortF
     const response = await axios.get(`${API_URL}/GetEmployees`, { params });
     return response.data;
 };
+const getEmployee = async (id) => {
+    if (!id || typeof id !== 'string') {
+        throw new Error("A valid GUID Id (string) is required to fetch the employee details.");
+    }
+
+    try {
+        const response = await axios.get(`${API_URL}/GetEmployee`, { params: { id } });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching employee details:", error);
+        throw error;
+    }
+};
 
 const createEmployee = async (employee) => {
     const response = await axios.post(`${API_URL}/createEmployee`, employee);
@@ -30,6 +43,7 @@ const updateEmployee = async (employee) => {
 
 export default {
     getEmployees,
+    getEmployee,
     createEmployee,
     updateEmployee,
 };

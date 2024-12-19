@@ -1,20 +1,49 @@
-// src/Components/Department/DepartmentFormModal.js
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import EmployeeService from '../../Services/EmployeeService';
 
 const DepartmentFormModal = ({ show, handleClose, handleSubmit, department }) => {
     const [formData, setFormData] = useState({
         id: '',
         departmentName: '',
         managerId: '',
-        employeeName: '',
         budget: 0,
         isActive: true,
     });
 
+    const [employees, setEmployees] = useState([]);
+
+    useEffect(() => {
+        const fetchEmployees = async () => {
+            try {
+                const data = await EmployeeService.getEmployees();
+                setEmployees(data.records || []);
+            } catch (error) {
+                console.error('Error fetching employees:', error);
+            }
+        };
+
+        fetchEmployees();
+    }, []);
+
     useEffect(() => {
         if (department) {
-            setFormData(department);
+            setFormData({
+                id: department.id || '',
+                departmentName: department.departmentName || '',
+                managerId: department.managerId || '',
+                budget: department.budget || '',
+                isActive: department.isActive || true,
+            });
+        }
+        else {
+            setFormData({
+                id: '',
+                departmentName: '',
+                managerId: '',
+                budget: 0,
+                isActive: true,
+            })
         }
     }, [department]);
 
@@ -47,23 +76,20 @@ const DepartmentFormModal = ({ show, handleClose, handleSubmit, department }) =>
                         />
                     </Form.Group>
                     <Form.Group controlId="formManagerId">
-                        <Form.Label>Manager ID</Form.Label>
+                        <Form.Label>Manager</Form.Label>
                         <Form.Control
-                            type="text"
+                            as="select"
                             name="managerId"
                             value={formData.managerId}
                             onChange={handleChange}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="formEmployeeName">
-                        <Form.Label>Employee Name</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="employeeName"
-                            value={formData.employeeName}
-                            onChange={handleChange}
-                            
-                        />
+                        >
+                            <option value="">Select Manager</option>
+                            {employees.map((employee) => (
+                                <option key={employee.id} value={employee.id}>
+                                    {employee.employeeName}
+                                </option>
+                            ))}
+                        </Form.Control>
                     </Form.Group>
                     <Form.Group controlId="formBudget">
                         <Form.Label>Budget</Form.Label>
@@ -84,9 +110,11 @@ const DepartmentFormModal = ({ show, handleClose, handleSubmit, department }) =>
                             onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
                         />
                     </Form.Group>
-                    <Button variant="primary" type="submit">
-                        Submit
-                    </Button>
+                    <Modal.Footer className="d-flex justify-content-end">
+                        <Button variant="primary" type="submit">
+                            Submit
+                        </Button>
+                    </Modal.Footer>
                 </Form>
             </Modal.Body>
         </Modal>
